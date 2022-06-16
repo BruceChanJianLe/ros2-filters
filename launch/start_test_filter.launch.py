@@ -33,7 +33,6 @@ def generate_launch_description():
     ld.add_action(test_filter_node)
     ld.add_action(start_rviz2)
     ld.add_action(play_rosbag)
-    
 
     # Return launch description
     return ld
