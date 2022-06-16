@@ -3,7 +3,7 @@
 // ROS2
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
-#include "filters/filter_chain.h"
+#include "filters/filter_chain.hpp"
 #include "message_filters/subscriber.h"
 
 // STL
@@ -40,7 +40,7 @@ namespace point_cloud_filters
         filters::FilterChain<std::shared_ptr<sensor_msgs::msg::PointCloud2>> filter_;
 
         /// \brief Filtered Point Cloud Publisher
-        rclcpp::Publisher<sensor_msgs::msg::PointCloud2> pub_;
+        rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub_;
 
         /// \brief Message Filter for Raw Point Cloud Subscriber
         message_filters::Subscriber<sensor_msgs::msg::PointCloud2> mf_sub_;
@@ -55,11 +55,14 @@ namespace point_cloud_filters
         std::recursive_mutex m_;
 
     private:
-        /// \brief Load parameters from ROS Server
+        /// \brief Declare parameters
         void loadROSParams();
 
+        /// \brief Undeclare parameters
+        void unloadROSParams();
+
         /// \brief
-        void pointcloudCB(const sensor_msgs::msg::PointCloud2::ConstPtr & msg);
+        void pointcloudCB(const std::shared_ptr<const sensor_msgs::msg::PointCloud2> & msg);
 
         /// \brief Input pointcloud topic
         std::string input_pc_topic_;
