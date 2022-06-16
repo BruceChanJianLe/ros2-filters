@@ -20,6 +20,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(pluginlib REQUIRED)
+find_package(message_filters REQUIRED)
 
 # Build
 include_directories(include)
@@ -35,6 +36,17 @@ ament_target_dependencies(${PROJECT_NAME}
   pluginlib
 )
 
+add_executable(pc_to_pc_filter_chain
+  src/point_cloud_to_point_cloud_filter_chain.cpp
+  src/point_cloud_to_point_cloud_filter_chain_node.cpp
+)
+ament_target_dependencies(pc_to_pc_filter_chain
+  rclcpp
+  sensor_msgs
+  pluginlib
+  message_filters
+)
+
 # Install
 pluginlib_export_plugin_description_file(filters filters.xml)
 
@@ -43,6 +55,7 @@ install(DIRECTORY
   DESTINATION include
 )
 
+# ROS2 filters library
 install(TARGETS ${PROJECT_NAME}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
@@ -50,9 +63,17 @@ install(TARGETS ${PROJECT_NAME}
   INCLUDES DESTINATION include
 )
 
+# point cloud to point cloud filter chain
+install(TARGETS
+  pc_to_pc_filter_chain
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 install(DIRECTORY
   launch
   config
+  test
+  rviz2
   DESTINATION share/${PROJECT_NAME}
 )
 
