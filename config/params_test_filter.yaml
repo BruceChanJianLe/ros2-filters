@@ -1,0 +1,13 @@
+pc_to_pc_filter_chain_node:
+  ros__parameters:
+    input_pointcloud_topic: rs0_points
+    output_pointcloud_topic: output_cloud
+    point_cloud_filter_chain:
+      name: first_layer
+      type: point_cloud_filters/TestFilter
+      params:
+        string: "hello_world"
+        double: 0.123
+        int: 100
+        debug: true
+    use_sim_time: true
