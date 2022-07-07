@@ -15,7 +15,7 @@ namespace point_cloud_filters
 {
     /// \brief Filter chain parameter name
     const std::string point_cloud_filter_chain = "point_cloud_filter_chain";
-    const std::string filter_chain_type = "sensor_msgs::msg::PointCloud2";
+    const std::string filter_chain_type = "std::shared_ptr<sensor_msgs::msg::PointCloud2>";
 
     class PointCloudToPointCloudFilterChain
     #if BUILDING_NODELET
