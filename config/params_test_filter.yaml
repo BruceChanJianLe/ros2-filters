@@ -2,7 +2,7 @@ pc_to_pc_filter_chain_node:
   ros__parameters:
     input_pointcloud_topic: rs0_points
     output_pointcloud_topic: output_cloud
-    point_cloud_filter_chain:
+    filter1:
       name: first_layer
       type: point_cloud_filters/TestFilter
       params:
