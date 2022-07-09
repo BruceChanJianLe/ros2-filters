@@ -2,7 +2,6 @@
 
 // ROS2
 #include "rclcpp/rclcpp.hpp"
-#include "filters/filter_base.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 
 #include "ros2-filters/base_filter.hpp"
@@ -13,7 +12,7 @@
 
 namespace point_cloud_filters
 {
-    class TestFilter : public filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>, public BaseFilter
+    class TestFilter : public BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>
     {
     public:
         /** \brief Construct a new Test Filter object */
@@ -35,6 +34,7 @@ namespace point_cloud_filters
           * \return false if failed to filter point cloud
           */
         bool update(const std::shared_ptr<sensor_msgs::msg::PointCloud2> & input_pointcloud, std::shared_ptr<sensor_msgs::msg::PointCloud2> & output_pointcloud) override;
+
       private:
         std::string string_;
         double double_;
