@@ -13,7 +13,7 @@ namespace point_cloud_filters
 
     bool TestFilter::configure()
     {
-        if(!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("string"), string_))
+        if(!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("string"), string_))
         {
             RCLCPP_ERROR_STREAM(
                 logging_interface_->get_logger(),
@@ -25,7 +25,7 @@ namespace point_cloud_filters
             return false;
         }
 
-        if(!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("double"), double_))
+        if(!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("double"), double_))
         {
             RCLCPP_ERROR_STREAM(
                 logging_interface_->get_logger(),
@@ -37,7 +37,7 @@ namespace point_cloud_filters
             return false;
         }
 
-        if(!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("int"), int_))
+        if(!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("int"), int_))
         {
             ;
             RCLCPP_ERROR_STREAM(
@@ -50,7 +50,7 @@ namespace point_cloud_filters
             return false;
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("debug"), debug_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("debug"), debug_))
         {
             RCLCPP_ERROR_STREAM(
                 logging_interface_->get_logger(),
@@ -72,7 +72,7 @@ namespace point_cloud_filters
         );
 
         // COMMON START
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("filter_field_name"), filter_field_name_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("filter_field_name"), filter_field_name_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
@@ -84,7 +84,7 @@ namespace point_cloud_filters
             filter_field_name_ = "z";
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("filter_limit_min"), filter_limit_min_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("filter_limit_min"), filter_limit_min_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
@@ -96,7 +96,7 @@ namespace point_cloud_filters
             filter_limit_min_ = 0.0;
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("filter_limit_max"), filter_limit_max_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("filter_limit_max"), filter_limit_max_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
@@ -108,7 +108,7 @@ namespace point_cloud_filters
             filter_limit_max_ = 1.0;
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("filter_limit_negative"), filter_limit_negative_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("filter_limit_negative"), filter_limit_negative_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
@@ -120,7 +120,7 @@ namespace point_cloud_filters
             filter_limit_negative_ = false;
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("keep_organized"), keep_organized_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("keep_organized"), keep_organized_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
@@ -132,7 +132,7 @@ namespace point_cloud_filters
             keep_organized_ = false;
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("input_frame"), tf_input_frame_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("input_frame"), tf_input_frame_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
@@ -144,7 +144,7 @@ namespace point_cloud_filters
             tf_input_frame_ = "";
         }
 
-        if (!filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParam(std::string("output_frame"), tf_output_frame_))
+        if (!BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getParamFilter(std::string("output_frame"), tf_output_frame_))
         {
             RCLCPP_WARN_STREAM(
                 logging_interface_->get_logger(),
