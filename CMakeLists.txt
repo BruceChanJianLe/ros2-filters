@@ -27,7 +27,6 @@ include_directories(include)
 
 add_library(${PROJECT_NAME}
   SHARED
-  src/base_filter.cpp
   src/test_filter.cpp
 )
 ament_target_dependencies(${PROJECT_NAME}
