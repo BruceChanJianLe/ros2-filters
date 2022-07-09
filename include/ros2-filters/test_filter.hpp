@@ -40,6 +40,12 @@ namespace point_cloud_filters
         double double_;
         int int_;
         bool debug_;
+
+        /**
+         * @brief Callback executed when a paramter change is detected
+         * @param parameters list of changed parameters
+         */
+        rcl_interfaces::msg::SetParametersResult dynamicParametersCallback(std::vector<rclcpp::Parameter> parameters) override;
     };
 
 } // namespace point_cloud_filters

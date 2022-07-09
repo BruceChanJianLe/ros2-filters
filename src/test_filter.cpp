@@ -157,6 +157,9 @@ namespace point_cloud_filters
         }
         // COMMON END
 
+        // Setup dynamic parameters server
+        dyn_params_handler_ = params_interface_->add_on_set_parameters_callback([this](std::vector<rclcpp::Parameter> parameters){return this->dynamicParametersCallback(parameters);});
+
         // Update filter implementation
 
         return true;
@@ -193,6 +196,135 @@ namespace point_cloud_filters
         output_pointcloud = std::move(input_pointcloud);
 
         return true;
+    }
+
+    rcl_interfaces::msg::SetParametersResult TestFilter::dynamicParametersCallback(std::vector<rclcpp::Parameter> parameters)
+    {
+        rcl_interfaces::msg::SetParametersResult result;
+        const auto & filter_name = filters::FilterBase<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::getName();
+        bool unknown_param = false;
+
+        try
+        {
+            // Update parameters
+            for (auto parameter : parameters)
+            {
+                const auto & type = parameter.get_type();
+                const auto & name = parameter.get_name();
+
+                // COMMON START
+                switch (type)
+                {
+                case rclcpp::ParameterType::PARAMETER_DOUBLE:
+                    if (name ==  filter_name + "filter_limit_min")
+                        this->filter_limit_min_ = parameter.as_double();
+                    else if (name ==  filter_name + "filter_limit_max")
+                        this->filter_limit_max_ = parameter.as_double();
+                    // LOCAL PARAM START
+                    else if (name == filter_name + "double")
+                        double_= parameter.as_double();
+                    // LOCAL PARAM END
+                    else
+                        unknown_param = true;
+                    break;
+
+                case rclcpp::ParameterType::PARAMETER_STRING:
+                    if (name ==  filter_name + "filter_field_name")
+                        this->filter_field_name_ = parameter.as_string();
+                    else if (name ==  filter_name + "input_frame")
+                        this->tf_input_frame_ = parameter.as_string();
+                    else if (name ==  filter_name + "output_frame")
+                        this->tf_output_frame_ = parameter.as_string();
+                    // LOCAL PARAM START
+                    else if (name == filter_name + "string")
+                        string_= parameter.as_string();
+                    // LOCAL PARAM END
+                    else
+                        unknown_param = true;
+                    break;
+
+                case rclcpp::ParameterType::PARAMETER_BOOL:
+                    if (name ==  filter_name + "filter_limit_negative")
+                        this->filter_limit_negative_ = parameter.as_bool();
+                    else if (name ==  filter_name + "keep_organized")
+                        this->keep_organized_ = parameter.as_bool();
+                    // LOCAL PARAM START
+                    else if (name == filter_name + "debug")
+                        debug_ = parameter.as_bool();
+                    // LOCAL PARAM END
+                    else
+                        unknown_param = true;
+                    break;
+                case rclcpp::ParameterType::PARAMETER_INTEGER:
+                    // LOCAL PARAM START
+                    if ( name == filter_name + "int")
+                        int_= parameter.as_int();
+                    // LOCAL PARAM END
+                    else
+                        unknown_param = true;
+                    break;
+
+                default:
+                    unknown_param = true;
+                    break;
+                }
+                // COMMON END
+
+                if (unknown_param)
+                    RCLCPP_WARN_STREAM(
+                        logging_interface_->get_logger(),
+                        "("
+                        << __func__
+                        << ") unknown param - "
+                        << name
+                        << " was not set with "
+                        << parameter.value_to_string()
+                    );
+                else
+                    BaseFilter<std::shared_ptr<sensor_msgs::msg::PointCloud2>>::printParamUpdate(name.c_str(), parameter.value_to_string());
+
+            }
+        }
+        catch(const rclcpp::ParameterTypeException & e)
+        {
+            RCLCPP_ERROR_STREAM(
+                this->logging_interface_->get_logger(),
+                "("
+                << __func__
+                << ") caught an error - "
+                << e.what()
+            );
+
+            result.successful = false;
+            result.reason = "ParameterTypeException";
+            return result;
+        }
+        catch(...)
+        {
+            RCLCPP_ERROR_STREAM(
+                this->logging_interface_->get_logger(),
+                "("
+                << __func__
+                << ") caught an error."
+            );
+
+            result.successful = false;
+            result.reason = "an error caught";
+            return result;
+        }
+
+        if (unknown_param)
+        {
+            result.successful = false;
+            result.reason = "There was an unkonwn param";
+        }
+        else
+        {
+            result.successful = true;
+            result.reason = "success";
+        }
+
+        return result;
     }
 
 } // namespace point_cloud_filters
