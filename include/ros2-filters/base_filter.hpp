@@ -30,6 +30,12 @@ namespace point_cloud_filters
           */
         virtual bool update(const T & input_pointcloud, T & output_pointcloud) = 0;
 
+        /**
+         * @brief Callback executed when a paramter change is detected
+         * @param parameters list of changed parameters
+         */
+        virtual rcl_interfaces::msg::SetParametersResult dynamicParametersCallback(std::vector<rclcpp::Parameter> parameters) = 0;
+
     private:
         template<typename PT>
         bool getParamFilterImpl(const std::string & name, const uint8_t type, PT default_value, PT & value_out)
@@ -164,6 +170,11 @@ namespace point_cloud_filters
             name, rcl_interfaces::msg::ParameterType::PARAMETER_STRING_ARRAY, {}, value);
         }
 
+        /**
+         * @brief Print out params that are successfully set
+         * @param name
+         * @param value
+         */
         void printParamUpdate(const std::string & name, const std::string & value) const
         {
             RCLCPP_INFO_STREAM(
@@ -198,6 +209,10 @@ namespace point_cloud_filters
 
         /// \brief Set whether the filtered points should be kept and set to NaN, or removed from the PointCloud, thus potentially breaking its organized structure.
         bool keep_organized_;
+
+        /// \brief Dynamic parameters handler
+        rclcpp::node_interfaces::OnSetParametersCallbackHandle::SharedPtr dyn_params_handler_;
+
 
     };
 
