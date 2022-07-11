@@ -258,7 +258,7 @@ namespace point_cloud_filters
                 case rclcpp::ParameterType::PARAMETER_INTEGER:
                     // LOCAL PARAM START
                     if ( name == filter_name + "int")
-                        int_= parameter.as_int();
+                        int_ = parameter.as_int();
                     // LOCAL PARAM END
                     else
                         unknown_param = true;
